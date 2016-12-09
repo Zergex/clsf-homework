@@ -3,9 +3,6 @@ import requests
 import calendar
 import datetime
 
-#start_time = datetime.datetime.now()
-#print('Начало:', start_time)
-
 site = 'http://lenta.ru'
 rubrics = ['russia', 'world', 'ussr', 'economics', 'business',
            'forces', 'science', 'culture', 'sport', 'media', 'style', 'travel', 'life']
@@ -15,14 +12,9 @@ filenames = ['russia.txt', 'world.txt', 'ussr.txt', 'economics.txt', 'business.t
 
 years = [2015, 2016]
 
-#for i in range(len(filenames)):   #было необходимо для начала работы и многократных попыток
-#    with open(filenames[i], 'w', encoding="utf-8") as f:
-#        f.truncate()
-
 for yr in range(len(years)):
     for mn in range(1, 13):
         for ds in range(1, calendar.monthrange(years[yr], mn)[1] + 1):
-            #if datetime.date(years[yr], mn, ds) < (datetime.date(2016, 4, 26)):  #пропало соединение на этом моменте
             #    continue
             if datetime.date(years[yr], mn, ds) == (datetime.date.today() + datetime.timedelta(days=1)):
                 break
@@ -30,7 +22,6 @@ for yr in range(len(years)):
                 year = str(datetime.date(years[yr], mn, ds))[0:4]
                 month = str(datetime.date(years[yr], mn, ds))[5:7]
                 day = str(datetime.date(years[yr], mn, ds))[8:10]
-                #print(datetime.date(years[yr], mn, ds))  #для отслеживания
             for rubs in range(len(rubrics)):
                 response = requests.get(site + '/' + 'rubrics/' + rubrics[rubs] + '/' + year + '/' + month + '/' + day)
                 tree = lxml.html.fromstring(response.text)
@@ -53,5 +44,3 @@ for yr in range(len(years)):
                     f.write(news_text + '\n\n\n\n')
                     f.close()
 
-#end_time = datetime.datetime.now()
-#print('Конец:', end_time)
