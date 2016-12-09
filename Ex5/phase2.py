@@ -1,8 +1,6 @@
 from sklearn.externals import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-#"term frequency times inverse document frequency"
-#отражает то, насколько важным является слово для документа в их коллекции
 from stop_words import get_stop_words
 
 
@@ -19,10 +17,9 @@ for i in range(len(rubrics)):
     content.append(news_file.read())
     news_file.close()
 
-vectorizer = TfidfVectorizer(max_features=20000, stop_words=get_stop_words('ru')) #в словарь войдут первые max_features слов с наиболее высокой частотой, игнорируя stop-words
-data = vectorizer.fit_transform(content)  #учит словарь, возвращает матрицу "document-term"
-joblib.dump(vectorizer, 'vectorizer.clf')   #сохраняет объект vectorizer в виде файла для дальнейшего использования
+vectorizer = TfidfVectorizer(max_features=20000, stop_words=get_stop_words('ru'))
+data = vectorizer.fit_transform(content)
+joblib.dump(vectorizer, 'vectorizer.clf')
 
-classifier = MultinomialNB().fit(data, rubrics)  #для подсчета слов подходит полиномиальный байес
+classifier = MultinomialNB().fit(data, rubrics)
 joblib.dump(classifier, 'classifier.clf')
-
